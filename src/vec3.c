@@ -1,6 +1,8 @@
 #include "vec3.h"
 #include "math_impl.h"
 
+
+
 inline_always
 const Vec3 vec3(f32 x,f32 y,f32 z) {
   return vec3_new(x,y,z);
@@ -185,6 +187,62 @@ inline
 const f32 vec3_len_squared(Vec3 self) {
   return vec3_dot(self,self);
 }
+
+inline
+const f32 vec3_len_recip(Vec3 self) {
+  return 1.0F/vec3_len(self);
+}
+
+inline
+const f32 vec3_distance(Vec3 self,Vec3 rhs) {
+  return 0.0; // TODO
+}
+
+inline
+const f32 vec3_distance_squared(Vec3 self,Vec3 rhs) {
+  return 0.0; // TODO
+}
+
+inline
+const Vec3 vec3_div_euclid(Vec3 self,Vec3 rhs) {
+  Vec3 vec={
+    .x=f32_div_euclid(self.x,rhs.x),
+    .y=f32_div_euclid(self.y,rhs.y),
+    .z=f32_div_euclid(self.z,rhs.z)
+  };
+
+  return vec;
+}
+
+inline
+const Vec3 vec3_rem_euclid(Vec3 self,Vec3 rhs) {
+  Vec3 vec={
+    .x=f32_rem_euclid(self.x,rhs.x),
+    .y=f32_rem_euclid(self.y,rhs.y),
+    .z=f32_rem_euclid(self.z,rhs.z)
+  };
+
+  return vec;
+}
+
+inline
+const Vec3 vec3_normalize(Vec3 self) {
+  return vec3(0.0,0.0,0.0); // TODO
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

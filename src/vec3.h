@@ -32,6 +32,9 @@ const bool vec3_is_finite(Vec3 self);
 const bool vec3_is_nan(Vec3 self);
 const f32 vec3_len(Vec3 self);
 const f32 vec3_len_squared(Vec3 self);
-
-
-
+const f32 vec3_len_recip(Vec3 self);
+const f32 vec3_distance(Vec3 self,Vec3 rhs);
+const f32 vec3_distance_squared(Vec3 self,Vec3 rhs);
+const Vec3 vec3_div_euclid(Vec3 self,Vec3 rhs);
+const Vec3 vec3_rem_euclid(Vec3 self,Vec3 rhs);
+const Vec3 vec3_normalize(Vec3 self);
