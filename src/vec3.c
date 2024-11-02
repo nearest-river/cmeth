@@ -47,7 +47,7 @@ const Vec3 vec3_from_array(f64 a[3]) {
 }
 
 inline
-const void vec3_write_to_slice(Vec3 self,f32* slice) {
+void vec3_write_to_slice(Vec3 self,f32* slice) {
   slice[0]=self.x;
   slice[1]=self.y;
   slice[2]=self.z;
@@ -230,11 +230,57 @@ const Vec3 vec3_normalize(Vec3 self) {
   return vec3(0.0,0.0,0.0); // TODO
 }
 
+inline_always
+const Vec3 vec3_default() {
+  return vec3_splat(0.0F);
+}
 
+inline
+const Vec3 vec3_div(Vec3 self,Vec3 rhs) {
+  Vec3 vec={
+    .x=self.x/rhs.x,
+    .y=self.y/rhs.y,
+    .z=self.z/rhs.z
+  };
 
+  return vec;
+}
 
+inline
+void vec3_dev_assign(Vec3* self,Vec3 rhs) {
+  self->x/=rhs.x;
+  self->y/=rhs.y;
+  self->z/=rhs.z;
+}
 
+inline
+const Vec3 vec3_div_f32(Vec3 self,f32 rhs) {
+  Vec3 vec={
+    .x=self.x/rhs,
+    .y=self.y/rhs,
+    .z=self.z/rhs
+  };
 
+  return vec;
+}
+
+inline
+void vec3_div_assign_f32(Vec3* self,f32 rhs) {
+  self->x/=rhs,
+  self->y/=rhs,
+  self->z/=rhs;
+}
+
+inline
+const Vec3 f32_div_vec3(f32 self,Vec3 rhs) {
+  Vec3 vec={
+    .x=self/rhs.x,
+    .y=self/rhs.y,
+    .z=self/rhs.z
+  };
+
+  return vec;
+}
 
 
 
