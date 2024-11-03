@@ -1,5 +1,6 @@
 #include "vec3.h"
 #include "math_impl.h"
+#include <math.h>
 
 
 
@@ -281,6 +282,77 @@ const Vec3 f32_div_vec3(f32 self,Vec3 rhs) {
 
   return vec;
 }
+
+inline
+const Vec3 vec3_mul(Vec3 self,Vec3 rhs) {
+  Vec3 vec={
+    .x=self.x*rhs.x,
+    .y=self.y*rhs.y,
+    .z=self.z*rhs.z
+  };
+
+  return vec;
+}
+
+inline
+void vec3_mul_assign(Vec3* self,Vec3 rhs) {
+  self->x*=rhs.x;
+  self->y*=rhs.y;
+  self->z*=rhs.z;
+}
+
+inline
+const Vec3 vec3_mul_f32(Vec3 self,f32 rhs) {
+  Vec3 vec={
+    .x=self.x*rhs,
+    .y=self.y*rhs,
+    .z=self.z*rhs
+  };
+
+  return vec;
+}
+
+inline
+void vec3_mul_assign_f32(Vec3* self,f32 rhs) {
+  self->x*=rhs;
+  self->y*=rhs;
+  self->z*=rhs;
+}
+
+inline
+const Vec3 f32_mul_vec3(f32 self,Vec3 rhs) {
+  Vec3 vec={
+    .x=self*rhs.x,
+    .y=self*rhs.y,
+    .z=self*rhs.z
+  };
+
+  return vec;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
