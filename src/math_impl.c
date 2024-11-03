@@ -80,6 +80,9 @@ const f32 f32_rem_euclid(f32 self,f32 rhs) {
   return r<0.0?r+f32_abs(rhs):r;
 }
 
-
+inline_always
+const f32 f32_neg(f32 self) {
+  return -self;
+}
 
 

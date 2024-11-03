@@ -470,7 +470,16 @@ const Vec3 f32_rem_vec3(f32 self,Vec3 rhs) {
   return vec;
 }
 
+inline
+const Vec3 vec3_neg(Vec3 self) {
+  Vec3 vec={
+    .x=f32_neg(self.x),
+    .y=f32_neg(self.y),
+    .z=f32_neg(self.z)
+  };
 
+  return vec;
+}
 
 
 
