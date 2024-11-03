@@ -423,6 +423,52 @@ const Vec3 f32_sub_vec3(f32 self,Vec3 rhs) {
   return vec;
 }
 
+inline
+const Vec3 vec3_rem(Vec3 self,Vec3 rhs) {
+  Vec3 vec={
+    .x=f32_rem(self.x,rhs.x),
+    .y=f32_rem(self.y,rhs.y),
+    .z=f32_rem(self.z,rhs.z)
+  };
+
+  return vec;
+}
+
+inline
+void vec3_rem_assign(Vec3* self,Vec3 rhs) {
+  self->x=f32_rem(self->x,rhs.x);
+  self->y=f32_rem(self->x,rhs.y);
+  self->z=f32_rem(self->x,rhs.z);
+}
+
+inline
+const Vec3 vec3_rem_f32(Vec3 self,f32 rhs) {
+  Vec3 vec={
+    .x=f32_rem(self.x,rhs),
+    .y=f32_rem(self.y,rhs),
+    .z=f32_rem(self.z,rhs)
+  };
+
+  return vec;
+}
+
+inline
+void vec3_rem_assign_f32(Vec3* self,f32 rhs) {
+  self->x=f32_rem(self->x,rhs);
+  self->y=f32_rem(self->y,rhs);
+  self->z=f32_rem(self->z,rhs);
+}
+
+inline
+const Vec3 f32_rem_vec3(f32 self,Vec3 rhs) {
+  Vec3 vec={
+    .x=f32_rem(self,rhs.x),
+    .y=f32_rem(self,rhs.y),
+    .z=f32_rem(self,rhs.z)
+  };
+
+  return vec;
+}
 
 
 
