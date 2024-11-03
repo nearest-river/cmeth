@@ -49,7 +49,11 @@ void vec3_mul_assign(Vec3* self,Vec3 rhs);
 const Vec3 vec3_mul_f32(Vec3 self,f32 rhs);
 void vec3_mul_assign_f32(Vec3* self,f32 rhs);
 const Vec3 f32_mul_vec3(f32 self,Vec3 rhs);
-
+const Vec3 vec3_add(Vec3 self,Vec3 rhs);
+void vec3_add_assign(Vec3* self,Vec3 rhs);
+const Vec3 vec3_add_f32(Vec3 self,f32 rhs);
+void vec3_add_assign_f32(Vec3* self,f32 rhs);
+const Vec3 f32_add_vec3(f32 self,Vec3 rhs);
 
 
 
