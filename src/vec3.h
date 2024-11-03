@@ -64,7 +64,7 @@ void vec3_rem_assign(Vec3* self,Vec3 rhs);
 const Vec3 vec3_rem_f32(Vec3 self,f32 rhs);
 void vec3_rem_assign_f32(Vec3* self,f32 rhs);
 const Vec3 f32_rem_vec3(f32 self,Vec3 rhs);
-
+const Vec3 vec3_neg(Vec3 self);
 
 
 
