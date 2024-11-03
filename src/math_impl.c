@@ -55,6 +55,11 @@ const f32 f32_rem(f32 self,f32 x) {
 }
 
 inline_always
+const f32 f32_rem_assign(f32 self,f32 x) {
+
+}
+
+inline_always
 const f32 f32_div_euclid(f32 self,f32 x) {
   f32 q=f32_trunc(self/x);
   if(f32_rem(self,x)<0.0) {
