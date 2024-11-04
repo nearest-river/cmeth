@@ -232,6 +232,22 @@ const Vec3 vec3_normalize(Vec3 self) {
   return normalized;
 }
 
+inline
+const Vec3 vec3_normalize_or(Vec3 self,Vec3 fallback) {
+  f32 rcp=vec3_len_recip(self);
+  return f32_is_finite(rcp) && rcp>0.0?vec3_mul_f32(self,rcp):fallback;
+}
+
+inline
+const Vec3 vec3_normalize_or_zero(Vec3 self) {
+  return vec3_normalize_or(self,vec3_splat(0.0F));
+}
+
+inline
+const bool vec3_is_normalized(Vec3 self) {
+  return f32_abs(vec3_len_squared(self) - 1.0) <= 2e-4;
+}
+
 inline_always
 const Vec3 vec3_default() {
   return vec3_splat(0.0F);
