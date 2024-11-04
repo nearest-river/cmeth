@@ -1,9 +1,10 @@
+#ifndef CMETH_MATH_IMPL_H
+#define CMETH_MATH_IMPL_H
+
+#define MATH_IMPL_H
 #include <math.h>
 #include "prelude.h"
-
-
-#define F32_NAN (f32)(0.0F/0.0F)
-#define F32_INFINITY (f32)(1.0F/0.0F)
+#include "../include/cprimitives/src/consts/f32.c"
 
 
 const f32 f32_abs(f32 self);
@@ -19,3 +20,4 @@ const f32 f32_rem(f32 self,f32 x);
 const f32 f32_rem_euclid(f32 self,f32 rhs);
 const f32 f32_neg(f32 self);
 
+#endif

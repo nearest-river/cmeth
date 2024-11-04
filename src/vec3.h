@@ -1,3 +1,5 @@
+#ifndef CMETH_VEC3_H
+#define CMETH_VEC3_H
 #include "prelude.h"
 
 
@@ -72,4 +74,19 @@ const f32* vec3_index(Vec3* self,usize index);
 
 
 
+#define VEC3_ZERO vec3_splat(0.0)
+#define VEC3_ONE vec3_splat(1.0)
+#define VEC3_NEG_ONE vec3_splat(-1.0)
+#define VEC3_MIN vec3_splat(F32_MIN)
+#define VEC3_MAX vec3_splat(F32_MAX)
+#define VEC3_INFINITY vec3_splat(F32_INFINITY)
+#define VEC3_NEG_INFINITY vec3_splat(F32_NEG_INFINITY)
+#define VEC3_X vec3(1.0,0.0,0.0)
+#define VEC3_Y vec3(0.0,1.0,0.0)
+#define VEC3_Z vec3(0.0,0.0,1.0)
+#define VEC3_NEG_X vec3(-1.0,0.0,0.0)
+#define VEC3_NEG_Y vec3(0.0,-1.0,0.0)
+#define VEC3_NEG_Z vec3(0.0,0.0,-1.0)
+#define VEC3_AXES {VEC3_X,VEC3_Y,VEC3_Z};
 
+#endif

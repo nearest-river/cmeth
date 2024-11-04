@@ -1,3 +1,6 @@
+#ifndef CMETH_PRELUDE_H
+#define CMETH_PRELUDE_H
+
 #include "../include/cprimitives/src/lib.h"
 #include <stdlib.h>
 #include <stdio.h>
@@ -11,3 +14,4 @@
 
 
 
+#endif
