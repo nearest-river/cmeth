@@ -4,7 +4,7 @@
 #define MATH_IMPL_H
 #include <math.h>
 #include "prelude.h"
-#include "../include/cprimitives/src/consts/f32.c"
+#include "../include/cprimitives/src/consts/f32.h"
 
 
 const f32 f32_abs(f32 self);
