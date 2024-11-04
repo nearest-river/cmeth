@@ -481,6 +481,15 @@ const Vec3 vec3_neg(Vec3 self) {
   return vec;
 }
 
+inline
+const f32* vec3_index(Vec3* self,usize index) {
+  switch(index) {
+    case 0: return &self->x;
+    case 1: return &self->y;
+    case 2: return &self->z;
+    default: panic("index out of bounds");
+  }
+}
 
 
 
