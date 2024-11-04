@@ -195,12 +195,12 @@ const f32 vec3_len_recip(Vec3 self) {
 
 inline
 const f32 vec3_distance(Vec3 self,Vec3 rhs) {
-  return 0.0; // TODO
+  return vec3_len(vec3_sub(self,rhs));
 }
 
 inline
 const f32 vec3_distance_squared(Vec3 self,Vec3 rhs) {
-  return 0.0; // TODO
+  return vec3_len_squared(vec3_sub(self,rhs));
 }
 
 inline
@@ -227,7 +227,9 @@ const Vec3 vec3_rem_euclid(Vec3 self,Vec3 rhs) {
 
 inline
 const Vec3 vec3_normalize(Vec3 self) {
-  return vec3(0.0,0.0,0.0); // TODO
+  Vec3 normalized=vec3_mul_f32(self,vec3_len_recip(self));
+  assert(vec3_is_finite(normalized));
+  return normalized;
 }
 
 inline_always
@@ -490,7 +492,6 @@ const f32* vec3_index(Vec3* self,usize index) {
     default: panic("index out of bounds");
   }
 }
-
 
 
 
