@@ -3,7 +3,7 @@
 
 #include <math.h>
 #include "../prelude.h"
-#include "../include/cprimitives/src/consts/f32.h"
+#include "../../include/cprimitives/src/consts/f32.h"
 
 #ifdef _cplusplus
 extern "C" {
