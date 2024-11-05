@@ -1,5 +1,5 @@
 #include "vec3.h"
-#include "math_impl.h"
+#include "prelude.h"
 
 
 /// Creates a 3-dimensional vector.

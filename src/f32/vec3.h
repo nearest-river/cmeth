@@ -1,6 +1,6 @@
-#ifndef CMETH_VEC3_H
-#define CMETH_VEC3_H
-#include "prelude.h"
+#ifndef CMETH_F32_VEC3_H
+#define CMETH_F32_VEC3_H
+#include "../prelude.h"
 
 
 typedef struct {
@@ -9,7 +9,9 @@ typedef struct {
   f32 z;
 } Vec3;
 
-
+#ifdef _cplusplus
+extern "C" {
+#endif
 const Vec3 vec3(f32 x,f32 y,f32 z);
 const Vec3 vec3_new(f32 x,f32 y,f32 z);
 const Vec3 vec3_splat(f32 v);
@@ -71,7 +73,9 @@ void vec3_rem_assign_f32(Vec3* self,f32 rhs);
 const Vec3 f32_rem_vec3(f32 self,Vec3 rhs);
 const Vec3 vec3_neg(Vec3 self);
 const f32* vec3_index(Vec3* self,usize index);
-
+#ifdef _cplusplus
+}
+#endif
 
 
 /// All zeroes.
