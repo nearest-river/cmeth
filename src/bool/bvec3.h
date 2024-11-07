@@ -20,6 +20,9 @@ const BVec3 bvec3(bool x, bool y, bool z);
 const BVec3 bvec3_new(bool x, bool y, bool z);
 
 /// Creates a vector mask with all elements set to `v`.
+const BVec3 bvec3_splat(bool v);
+
+/// Creates a vector mask with all elements set to `v`.
 const BVec3 bvec3_from_array(bool a[3]);
 
 /// Returns a bitmask with the lowest 3 bits set from the elements of `self`.
@@ -50,6 +53,11 @@ void bvec3_set(BVec3* self,usize index,bool value);
 #ifdef _cplusplus
 }
 #endif
+
+
+#define BVEC3_FALSE bvec3_splat(false)
+#define BVEC3_TRUE bvec3_splat(true)
+
 
 
 #endif

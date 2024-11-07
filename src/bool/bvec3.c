@@ -19,6 +19,12 @@ const BVec3 bvec3_new(bool x, bool y, bool z) {
 
 /// Creates a vector mask with all elements set to `v`.
 inline
+const BVec3 bvec3_splat(bool v) {
+  return bvec3_new(v,v,v);
+}
+
+/// Creates a new vector mask from a bool array.
+inline
 const BVec3 bvec3_from_array(bool a[3]) {
   return bvec3_new(a[0],a[1],a[2]);
 }
@@ -76,7 +82,10 @@ void bvec3_set(BVec3* self,usize index,bool value) {
   }
 }
 
-
+inline_always
+const BVec3 bvec3_default() {
+  return BVEC3_FALSE;
+}
 
 
 
