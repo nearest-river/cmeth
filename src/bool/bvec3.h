@@ -47,7 +47,21 @@ const bool bvec3_test(const BVec3 self,usize index);
 /// Panics if `index` is greater than 2.
 void bvec3_set(BVec3* self,usize index,bool value);
 
+const BVec3 bvec3_default();
 
+const BVec3 bvec3_bitand(const BVec3 self,const BVec3 rhs);
+
+void bvec3_bitand_assign(BVec3* self,const BVec3 rhs);
+
+const BVec3 bvec3_bitor(const BVec3 self,const BVec3 rhs);
+
+void bvec3_bitor_assign(BVec3* self,const BVec3 rhs);
+
+const BVec3 bvec3_bitxor(const BVec3 self,const BVec3 rhs);
+
+void bvec3_bitxor_assign(BVec3* self,const BVec3 rhs);
+
+const BVec3 bvec3_bitnot(const BVec3 self);
 
 
 #ifdef _cplusplus

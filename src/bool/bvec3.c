@@ -87,10 +87,68 @@ const BVec3 bvec3_default() {
   return BVEC3_FALSE;
 }
 
+inline
+const BVec3 bvec3_bitand(const BVec3 self,const BVec3 rhs) {
+  const BVec3 vec={
+    .x=self.x&rhs.x,
+    .y=self.y&rhs.y,
+    .z=self.z&rhs.z
+  };
 
+  return vec;
+}
 
+inline
+void bvec3_bitand_assign(BVec3* self,const BVec3 rhs) {
+  self->x&=rhs.x;
+  self->y&=rhs.y;
+  self->z&=rhs.z;
+}
 
+inline
+const BVec3 bvec3_bitor(const BVec3 self,const BVec3 rhs) {
+  const BVec3 vec={
+    .x=self.x|rhs.x,
+    .y=self.y|rhs.y,
+    .z=self.z|rhs.z
+  };
 
+  return vec;
+}
+
+inline
+void bvec3_bitor_assign(BVec3* self,const BVec3 rhs) {
+  self->x|=rhs.x;
+  self->y|=rhs.y;
+  self->z|=rhs.z;
+}
+
+const BVec3 bvec3_bitxor(const BVec3 self,const BVec3 rhs) {
+  const BVec3 vec={
+    .x=self.x^rhs.x,
+    .y=self.y^rhs.y,
+    .z=self.z^rhs.z
+  };
+
+  return vec;
+}
+
+inline
+void bvec3_bitxor_assign(BVec3* self,const BVec3 rhs) {
+  self->x^=rhs.x;
+  self->y^=rhs.y;
+  self->z^=rhs.z;
+}
+
+const BVec3 bvec3_bitnot(const BVec3 self) {
+  const BVec3 vec={
+    .x=!self.x,
+    .y=!self.y,
+    .z=!self.z
+  };
+
+  return vec;
+}
 
 
 
