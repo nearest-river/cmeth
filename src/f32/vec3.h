@@ -1,6 +1,7 @@
 #ifndef CMETH_F32_VEC3_H
 #define CMETH_F32_VEC3_H
 #include "../prelude.h"
+#include "../bool/bvec3.h"
 
 
 typedef struct {
@@ -15,6 +16,7 @@ extern "C" {
 const Vec3 vec3(f32 x,f32 y,f32 z);
 const Vec3 vec3_new(f32 x,f32 y,f32 z);
 const Vec3 vec3_splat(f32 v);
+const Vec3 vec3_select(BVec3 mask,Vec3 if_true,Vec3 if_false);
 const Vec3 vec3_map(Vec3 self,f32 (*f)(f32));
 const Vec3 vec3_from_array(f64 a[3]);
 void vec3_write_to_slice(Vec3 self,f32* slice);
@@ -24,10 +26,17 @@ const Vec3 vec3_dot_into_vec(Vec3 self,Vec3 rhs);
 const Vec3 vec3_cross(Vec3 self,Vec3 rhs);
 const Vec3 vec3_min(Vec3 self,Vec3 rhs);
 const Vec3 vec3_max(Vec3 self,Vec3 rhs);
+const Vec3 vec3_clamp(Vec3 self,Vec3 min,Vec3 max);
 const f32 vec3_min_element(Vec3 self);
 const f32 vec3_max_element(Vec3 self);
 const f32 vec3_element_sum(Vec3 self);
 const f32 vec3_element_product(Vec3 self);
+const BVec3 vec3_cmpeq(Vec3 self,Vec3 rhs);
+const BVec3 vec3_cmpne(Vec3 self,Vec3 rhs);
+const BVec3 vec3_cmpge(Vec3 self,Vec3 rhs);
+const BVec3 vec3_cmpgt(Vec3 self,Vec3 rhs);
+const BVec3 vec3_cmple(Vec3 self,Vec3 rhs);
+const BVec3 vec3_cmplt(Vec3 self,Vec3 rhs);
 const Vec3 vec3_abs(Vec3 self);
 const Vec3 vec3_signum(Vec3 self);
 const Vec3 vec3_copysign(Vec3 self,Vec3 rhs);

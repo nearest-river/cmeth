@@ -30,6 +30,22 @@ const Vec3 vec3_splat(f32 v) {
   return vec;
 }
 
+/// Creates a vector from the elements in `if_true` and `if_false`, selecting which to use
+/// for each element of `self`.
+///
+/// A true element in the mask uses the corresponding element from `if_true`, and false
+/// uses the element from `if_false`.
+inline
+const Vec3 vec3_select(BVec3 mask,Vec3 if_true,Vec3 if_false) {
+  Vec3 vec={
+    .x=bvec3_test(mask,0)? if_true.x : if_false.x,
+    .y=bvec3_test(mask,1)? if_true.y : if_false.y,
+    .z=bvec3_test(mask,2)? if_true.z : if_false.z,
+  };
+
+  return vec;
+}
+
 /// Returns a vector containing each element of `self` modified by a mapping function `f`.
 inline
 const Vec3 vec3_map(Vec3 self,f32 (*f)(f32)) {
@@ -145,6 +161,19 @@ const Vec3 vec3_max(Vec3 self,Vec3 rhs) {
   return vec;
 }
 
+/// Component-wise clamping of values, similar to `f32_clamp`.
+///
+/// Each element in `min` must be less-or-equal to the corresponding element in `max`.
+///
+/// # Panics
+ ///
+/// Will panic if `min` is greater than `max` when `cmeth_assert` is enabled.
+inline
+const Vec3 vec3_clamp(Vec3 self,Vec3 min,Vec3 max) {
+  cmeth_assert(bvec3_all(vec3_cmple(min,max)));
+  return vec3_min(vec3_max(self,min),max);
+}
+
 /// Returns the horizontal minimum of `self`.
 ///
 /// In other words this computes `min(x, y, ..)`.
@@ -177,8 +206,66 @@ const f32 vec3_element_product(Vec3 self) {
   return self.x*self.y*self.z;
 }
 
-//TODO: BVec3
+/// Returns a vector mask containing the result of a `==` comparison for each element of
+/// `self` and `rhs`.
+///
+/// In other words, this computes `[self.x == rhs.x, self.y == rhs.y, ..]` for all
+/// elements.
+inline
+const BVec3 vec3_cmpeq(Vec3 self,Vec3 rhs) {
+  return bvec3_new(self.x==rhs.x,self.y==rhs.y,self.z==rhs.z);
+}
 
+/// Returns a vector mask containing the result of a `!=` comparison for each element of
+/// `self` and `rhs`.
+///
+/// In other words this computes `[self.x != rhs.x, self.y != rhs.y, ..]` for all
+/// elements.
+inline
+const BVec3 vec3_cmpne(Vec3 self,Vec3 rhs) {
+  return bvec3_new(self.x!=rhs.x,self.y!=rhs.y,self.z!=rhs.z);
+}
+
+/// Returns a vector mask containing the result of a `>=` comparison for each element of
+/// `self` and `rhs`.
+///
+/// In other words this computes `[self.x >= rhs.x, self.y >= rhs.y, ..]` for all
+/// elements.
+inline
+const BVec3 vec3_cmpge(Vec3 self,Vec3 rhs) {
+  return bvec3_new(self.x>=rhs.x,self.y>=rhs.y,self.z>=rhs.z);
+}
+
+/// Returns a vector mask containing the result of a `>` comparison for each element of
+/// `self` and `rhs`.
+///
+/// In other words this computes `[self.x > rhs.x, self.y > rhs.y, ..]` for all
+/// elements.
+inline
+const BVec3 vec3_cmpgt(Vec3 self,Vec3 rhs) {
+  return bvec3_new(self.x>rhs.x,self.y>rhs.y,self.z>rhs.z);
+}
+
+/// Returns a vector mask containing the result of a `<=` comparison for each element of
+/// `self` and `rhs`.
+///
+/// In other words this computes `[self.x <= rhs.x, self.y <= rhs.y, ..]` for all
+/// elements.
+inline
+const BVec3 vec3_cmple(Vec3 self,Vec3 rhs) {
+  return bvec3_new(self.x<=rhs.x,self.y<=rhs.y,self.z<=rhs.z);
+}
+
+
+/// Returns a vector mask containing the result of a `<` comparison for each element of
+/// `self` and `rhs`.
+///
+/// In other words this computes `[self.x < rhs.x, self.y < rhs.y, ..]` for all
+/// elements.
+inline
+const BVec3 vec3_cmplt(Vec3 self,Vec3 rhs) {
+  return bvec3_new(self.x<rhs.x,self.y<rhs.y,self.z<rhs.z);
+}
 
 /// Returns a vector containing the absolute value of each element of `self`.
 inline
