@@ -213,7 +213,7 @@ const f32 vec3_element_product(Vec3 self) {
 /// elements.
 inline
 const BVec3 vec3_cmpeq(Vec3 self,Vec3 rhs) {
-  return bvec3_new(self.x==rhs.x,self.y==rhs.y,self.z==rhs.z);
+  return bvec3_new(f32_eq(self.x,rhs.x),f32_eq(self.y,rhs.y),f32_eq(self.z,rhs.z));
 }
 
 /// Returns a vector mask containing the result of a `!=` comparison for each element of
@@ -223,7 +223,7 @@ const BVec3 vec3_cmpeq(Vec3 self,Vec3 rhs) {
 /// elements.
 inline
 const BVec3 vec3_cmpne(Vec3 self,Vec3 rhs) {
-  return bvec3_new(self.x!=rhs.x,self.y!=rhs.y,self.z!=rhs.z);
+  return bvec3_new(f32_ne(self.x,rhs.x),f32_ne(self.y,rhs.y),f32_ne(self.z,rhs.z));
 }
 
 /// Returns a vector mask containing the result of a `>=` comparison for each element of
@@ -233,7 +233,7 @@ const BVec3 vec3_cmpne(Vec3 self,Vec3 rhs) {
 /// elements.
 inline
 const BVec3 vec3_cmpge(Vec3 self,Vec3 rhs) {
-  return bvec3_new(self.x>=rhs.x,self.y>=rhs.y,self.z>=rhs.z);
+  return bvec3_new(f32_ge(self.x,rhs.x),f32_ge(self.y,rhs.y),f32_ge(self.z,rhs.z));
 }
 
 /// Returns a vector mask containing the result of a `>` comparison for each element of
@@ -243,7 +243,7 @@ const BVec3 vec3_cmpge(Vec3 self,Vec3 rhs) {
 /// elements.
 inline
 const BVec3 vec3_cmpgt(Vec3 self,Vec3 rhs) {
-  return bvec3_new(self.x>rhs.x,self.y>rhs.y,self.z>rhs.z);
+  return bvec3_new(f32_gt(self.x,rhs.x),f32_gt(self.y,rhs.y),f32_gt(self.z,rhs.z));
 }
 
 /// Returns a vector mask containing the result of a `<=` comparison for each element of
@@ -253,7 +253,7 @@ const BVec3 vec3_cmpgt(Vec3 self,Vec3 rhs) {
 /// elements.
 inline
 const BVec3 vec3_cmple(Vec3 self,Vec3 rhs) {
-  return bvec3_new(self.x<=rhs.x,self.y<=rhs.y,self.z<=rhs.z);
+  return bvec3_new(f32_le(self.x,rhs.x),f32_le(self.y,rhs.y),f32_le(self.z,rhs.z));
 }
 
 
@@ -264,7 +264,7 @@ const BVec3 vec3_cmple(Vec3 self,Vec3 rhs) {
 /// elements.
 inline
 const BVec3 vec3_cmplt(Vec3 self,Vec3 rhs) {
-  return bvec3_new(self.x<rhs.x,self.y<rhs.y,self.z<rhs.z);
+  return bvec3_new(f32_lt(self.x,rhs.x),f32_lt(self.y,rhs.y),f32_lt(self.z,rhs.z));
 }
 
 /// Returns a vector containing the absolute value of each element of `self`.

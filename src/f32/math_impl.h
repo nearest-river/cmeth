@@ -20,6 +20,12 @@ const f32 f32_trunc(f32 self);
 const f32 f32_rem(f32 self,f32 x);
 const f32 f32_rem_euclid(f32 self,f32 rhs);
 const f32 f32_neg(f32 self);
+const f32 f32_eq(f32 self,f32 rhs);
+const f32 f32_ne(f32 self,f32 rhs);
+const f32 f32_ge(f32 self,f32 rhs);
+const f32 f32_gt(f32 self,f32 rhs);
+const f32 f32_le(f32 self,f32 rhs);
+const f32 f32_lt(f32 self,f32 rhs);
 #ifdef _cplusplus
 }
 #endif

@@ -55,11 +55,6 @@ const f32 f32_rem(f32 self,f32 x) {
 }
 
 inline_always
-const f32 f32_rem_assign(f32 self,f32 x) {
-
-}
-
-inline_always
 const f32 f32_div_euclid(f32 self,f32 x) {
   f32 q=f32_trunc(self/x);
   if(f32_rem(self,x)<0.0) {
@@ -83,6 +78,36 @@ const f32 f32_rem_euclid(f32 self,f32 rhs) {
 inline_always
 const f32 f32_neg(f32 self) {
   return -self;
+}
+
+inline_always
+const f32 f32_eq(f32 self,f32 rhs) {
+  return self==rhs;
+}
+
+inline_always
+const f32 f32_ne(f32 self,f32 rhs) {
+  return !f32_eq(self,rhs);
+}
+
+inline_always
+const f32 f32_ge(f32 self,f32 rhs) {
+  return self>=rhs;
+}
+
+inline_always
+const f32 f32_gt(f32 self,f32 rhs) {
+  return self>rhs;
+}
+
+inline_always
+const f32 f32_le(f32 self,f32 rhs) {
+  return self<=rhs;
+}
+
+inline_always
+const f32 f32_lt(f32 self,f32 rhs) {
+  return self<rhs;
 }
 
 
