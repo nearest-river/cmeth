@@ -1,4 +1,5 @@
 #include "vec3.h"
+#include "math_impl.h"
 #include "prelude.h"
 
 
@@ -437,6 +438,69 @@ const Vec3 vec3_normalize_or_zero(Vec3 self) {
 inline
 const bool vec3_is_normalized(Vec3 self) {
   return f32_abs(vec3_len_squared(self) - 1.0) <= 2e-4;
+}
+
+/// Returns the vector projection of `self` onto `rhs`.
+///
+/// `rhs` must be of non-zero length.
+///
+/// # Panics
+///
+/// Will panic if `rhs` is zero length when `cmeth_assert` is enabled.
+inline
+const Vec3 vec3_project_into(Vec3 self,Vec3 rhs) {
+  f32 other_len_sq_rcp=1/vec3_dot(rhs,rhs);
+  cmeth_assert(f32_is_finite(other_len_sq_rcp));
+  f32 x=vec3_dot(self,rhs)*other_len_sq_rcp;
+  return vec3_mul_f32(self,x);
+}
+
+/// Returns the vector rejection of `self` from `rhs`.
+///
+/// The vector rejection is the vector perpendicular to the projection of `self` onto
+/// `rhs`, in rhs words the result of `self - self.project_onto(rhs)`.
+///
+/// `rhs` must be of non-zero length.
+///
+/// # Panics
+///
+/// Will panic if `rhs` has a length of zero when `cmeth_assert` is enabled.
+inline
+const Vec3 vec3_reject_from(Vec3 self,Vec3 rhs) {
+  Vec3 projection=vec3_project_into(self,rhs);
+  return vec3_sub(self,projection);
+}
+
+
+/// Returns the vector projection of `self` onto `rhs`.
+///
+/// `rhs` must be normalized.
+///
+/// # Panics
+///
+/// Will panic if `rhs` is not normalized when `cmeth_assert` is enabled.
+inline
+const Vec3 vec3_project_onto_normalized(Vec3 self,Vec3 rhs) {
+  cmeth_assert(vec3_is_normalized(rhs));
+  f32 x=vec3_dot(self,rhs);
+  return vec3_mul_f32(self,x);
+}
+
+
+/// Returns the vector rejection of `self` from `rhs`.
+///
+ /// The vector rejection is the vector perpendicular to the projection of `self` onto
+/// `rhs`, in rhs words the result of `self - self.project_onto(rhs)`.
+///
+/// `rhs` must be normalized.
+///
+/// # Panics
+///
+/// Will panic if `rhs` is not normalized when `cmeth_assert` is enabled.
+inline
+const Vec3 vec3_reject_from_normalized(Vec3 self,Vec3 rhs) {
+  Vec3 projection=vec3_project_onto_normalized(self,rhs);
+  return vec3_sub(self,projection);
 }
 
 inline_always
