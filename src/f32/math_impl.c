@@ -110,4 +110,36 @@ const f32 f32_lt(f32 self,f32 rhs) {
   return self<rhs;
 }
 
+inline_always
+const f32 f32_round(f32 self) {
+  return roundf(self);
+}
+
+inline_always
+const f32 f32_floor(f32 self) {
+  return floorf(self);
+}
+
+inline_always
+const f32 f32_ceil(f32 self) {
+  return ceilf(self);
+}
+
+inline_always
+const f32 f32_exp(f32 self) {
+  return expf(self);
+}
+
+inline_always
+const f32 f32_pow(f32 self,f32 x) {
+  return powf(self,x);
+}
+
+inline_always
+const f32 f32_mul_add(f32 a,f32 b,f32 c) {
+  return fmaf(a,b,c);
+}
+
+
+
 

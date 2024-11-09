@@ -26,6 +26,12 @@ const f32 f32_ge(f32 self,f32 rhs);
 const f32 f32_gt(f32 self,f32 rhs);
 const f32 f32_le(f32 self,f32 rhs);
 const f32 f32_lt(f32 self,f32 rhs);
+const f32 f32_round(f32 self);
+const f32 f32_floor(f32 self);
+const f32 f32_ceil(f32 self);
+const f32 f32_exp(f32 self);
+const f32 f32_pow(f32 self,f32 x);
+const f32 f32_mul_add(f32 a,f32 b,f32 c);
 #ifdef _cplusplus
 }
 #endif
