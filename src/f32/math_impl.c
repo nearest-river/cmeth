@@ -1,5 +1,6 @@
 #include <math.h>
 #include "math_impl.h"
+#include "trig.h"
 
 
 inline_always
@@ -139,6 +140,29 @@ inline_always
 const f32 f32_mul_add(f32 a,f32 b,f32 c) {
   return fmaf(a,b,c);
 }
+
+inline_always
+const u32 f32_to_bits(f32 self) {
+  return *((u32*)&self);
+}
+
+inline_always
+const f32 f32_acos_approx(f32 self) {
+  return _acos_approx_f32(self);
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

@@ -32,6 +32,10 @@ const f32 f32_ceil(f32 self);
 const f32 f32_exp(f32 self);
 const f32 f32_pow(f32 self,f32 x);
 const f32 f32_mul_add(f32 a,f32 b,f32 c);
+const u32 f32_to_bits(f32 self);
+
+
+
 #ifdef _cplusplus
 }
 #endif

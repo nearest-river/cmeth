@@ -138,26 +138,26 @@ const Vec3 vec3_cross(Vec3 self,Vec3 rhs) {
 
 /// Returns a vector containing the minimum values for each element of `self` and `rhs`.
 ///
-/// In other words this computes `[min(self.x,rhs.x), min(self.y,rhs.y), ..]`.
+/// In other words this computes `[MIN(self.x,rhs.x), MIN(self.y,rhs.y), ..]`.
 inline
 const Vec3 vec3_min(Vec3 self,Vec3 rhs) {
   Vec3 vec={
-    .x=min(self.x,rhs.x),
-    .y=min(self.y,rhs.y),
-    .z=min(self.z,rhs.z)
+    .x=MIN(self.x,rhs.x),
+    .y=MIN(self.y,rhs.y),
+    .z=MIN(self.z,rhs.z)
   };
   return vec;
 }
 
 /// Returns a vector containing the maximum values for each element of `self` and `rhs`.
 ///
-/// In other words this computes `[max(self.x,rhs.x), max(self.y,rhs.y), ..]`.
+/// In other words this computes `[MAX(self.x,rhs.x), MAX(self.y,rhs.y), ..]`.
 inline
 const Vec3 vec3_max(Vec3 self,Vec3 rhs) {
   Vec3 vec={
-    .x=max(self.x,rhs.x),
-    .y=max(self.y,rhs.y),
-    .z=max(self.z,rhs.z)
+    .x=MAX(self.x,rhs.x),
+    .y=MAX(self.y,rhs.y),
+    .z=MAX(self.z,rhs.z)
   };
   return vec;
 }
@@ -177,18 +177,18 @@ const Vec3 vec3_clamp(Vec3 self,Vec3 min,Vec3 max) {
 
 /// Returns the horizontal minimum of `self`.
 ///
-/// In other words this computes `min(x, y, ..)`.
+/// In other words this computes `MIN(x, y, ..)`.
 inline
 const f32 vec3_min_element(Vec3 self) {
-  return min(self.x,min(self.y,self.z));
+  return MIN(self.x,MIN(self.y,self.z));
 }
 
 /// Returns the horizontal maximum of `self`.
 ///
-/// In other words this computes `max(x, y, ..)`.
+/// In other words this computes `MAX(x, y, ..)`.
 inline
 const f32 vec3_max_element(Vec3 self) {
-  return max(self.x,max(self.y,self.z));
+  return MAX(self.x,MAX(self.y,self.z));
 }
 
 /// Returns the sum of all elements of `self`.
@@ -400,7 +400,7 @@ const Vec3 vec3_rem_euclid(Vec3 self,Vec3 rhs) {
 ///
 /// Panics
 ///
-/// Will panic if the resulting normalized vector is not finite when `glam_assert` is enabled.
+/// Will panic if the resulting normalized vector is not finite when `cmeth_assert` is enabled.
 inline
 const Vec3 vec3_normalize(Vec3 self) {
   Vec3 normalized=vec3_mul_f32(self,vec3_len_recip(self));
@@ -502,6 +502,353 @@ const Vec3 vec3_reject_from_normalized(Vec3 self,Vec3 rhs) {
   Vec3 projection=vec3_project_onto_normalized(self,rhs);
   return vec3_sub(self,projection);
 }
+
+/// Returns a vector containing the nearest integer to a number for each element of `self`.
+/// Round half-way cases away from 0.0.
+inline
+const Vec3 vec3_round(Vec3 self) {
+  Vec3 vec={
+    .x=f32_round(self.x),
+    .y=f32_round(self.y),
+    .z=f32_round(self.z)
+  };
+
+  return vec;
+}
+
+/// Returns a vector containing the largest integer less than or equal to a number for each
+/// element of `self`.
+inline
+const Vec3 vec3_floor(Vec3 self) {
+  Vec3 vec={
+    .x=f32_floor(self.x),
+    .y=f32_floor(self.y),
+    .z=f32_floor(self.z)
+  };
+
+  return vec;
+}
+
+/// Returns a vector containing the smallest integer greater than or equal to a number for
+/// each element of `self`.
+inline
+const Vec3 vec3_ceil(Vec3 self) {
+  Vec3 vec={
+    .x=f32_ceil(self.x),
+    .y=f32_ceil(self.y),
+    .z=f32_ceil(self.z)
+  };
+
+  return vec;
+}
+
+/// Returns a vector containing the integer part each element of `self`. This means numbers are
+/// always truncated towards zero.
+inline
+const Vec3 vec3_trunc(Vec3 self) {
+  Vec3 vec={
+    .x=f32_trunc(self.x),
+    .y=f32_trunc(self.y),
+    .z=f32_trunc(self.z)
+  };
+
+  return vec;
+}
+
+/// Returns a vector containing the fractional part of the vector as `vec3_sub(self,vec3_trunc(self))`.
+///
+/// Note that this differs from the GLSL implementation of `fract` which returns
+/// `vec3_sub(self,vec3_floor(self))`.
+///
+/// Note that this is fast but not precise for large numbers.
+inline
+const Vec3 vec3_fract(Vec3 self) {
+  Vec3 truncated=vec3_trunc(self);
+  return vec3_sub(self,truncated);
+}
+
+/// Returns a vector containing the fractional part of the vector as `vec3_sub(self,vec3_floor(self))`.
+///
+/// Note that this differs from the Rust implementation of `fract` which returns
+/// `vec3_sub(self,vec3_trunc(self))`.
+///
+/// Note that this is fast but not precise for large numbers.
+inline
+const Vec3 vec3_fract_gl(Vec3 self) {
+  Vec3 floored=vec3_floor(self);
+  return vec3_sub(self,floored);
+}
+
+/// Returns a vector containing `e^self` (the exponential function) for each element of
+/// `self`.
+inline
+const Vec3 vec3_exp(Vec3 self) {
+  Vec3 vec={
+    .x=f32_exp(self.x),
+    .y=f32_exp(self.y),
+    .z=f32_exp(self.z)
+  };
+
+  return vec;
+}
+
+/// Returns a vector containing each element of `self` raised to the power of `n`.
+inline
+const Vec3 vec3_pow(Vec3 self,f32 n) {
+  Vec3 vec={
+    .x=f32_pow(self.x,n),
+    .y=f32_pow(self.y,n),
+    .z=f32_pow(self.z,n)
+  };
+
+  return vec;
+}
+
+/// Returns a vector containing the reciprocal `1.0/n` of each element of `self`.
+inline
+const Vec3 vec3_recip(Vec3 self) {
+  Vec3 vec={
+    .x=1.0f/self.x,
+    .y=1.0f/self.y,
+    .z=1.0f/self.z
+  };
+
+  return vec;
+}
+
+/// Performs a linear interpolation between `self` and `rhs` based on the value `s`.
+///
+/// When `s` is `0.0`, the result will be equal to `self`.  When `s` is `1.0`, the result
+/// will be equal to `rhs`. When `s` is outside of range `[0, 1]`, the result is linearly
+/// extrapolated.
+inline
+const Vec3 vec3_lerp(Vec3 self,Vec3 rhs,f32 s) {
+  Vec3 srhs=vec3_mul_f32(rhs,s);
+  Vec3 s_1_self=vec3_mul_f32(self,(1.0f - s));
+  return vec3_add(s_1_self,srhs);
+}
+
+  /// Moves towards `rhs` based on the value `d`.
+  ///
+  /// When `d` is `0.0`, the result will be equal to `self`. When `d` is equal to
+  /// `vec3_distance(self,rhs)`, the result will be equal to `rhs`. Will not go past `rhs`.
+  inline
+  const Vec3 vec3_move_towards(Vec3* self,Vec3 rhs,f32 d) {
+    Vec3 a=vec3_sub(rhs,*self);
+    f32 len=vec3_len(a);
+    if(len<=d || len<=1e-4) {
+      return rhs;
+    }
+
+    return vec3_div_f32(vec3_add(*self,a),len+d);
+  }
+
+  /// Calculates the midpoint between `self` and `rhs`.
+  ///
+  /// The midpoint is the average of, or halfway point between, two vectors.
+  /// `vec3_midpoint(a,b)` should yield the same result as `vec3_lerp(a, b, 0.5)`
+  /// while being slightly cheaper to compute.
+  inline
+  const Vec3 vec3_midpoint(Vec3 self,Vec3 rhs) {
+    return vec3_mul_f32(vec3_add(self,rhs),0.5);
+  }
+
+  /// Returns true if the absolute difference of all elements between `self` and `rhs` is
+  /// less than or equal to `max_abs_diff`.
+  ///
+  /// This can be used to compare if two vectors contain similar elements. It works best when
+  /// comparing with a known value. The `max_abs_diff` that should be used used depends on
+  /// the values being compared against.
+  ///
+  /// For more see
+  /// [comparing floating point numbers](https://randomascii.wordpress.com/2012/02/25/comparing-floating-point-numbers-2012-edition/).
+  inline
+  const bool vec3_abs_diff_eq(Vec3 self,Vec3 rhs,f32 max_abs_diff) {
+    Vec3 abs_diff=vec3_abs(vec3_sub(self,rhs));
+    BVec3 mask=vec3_cmple(abs_diff,vec3_splat(max_abs_diff));
+    return bvec3_all(mask);
+  }
+
+inline_always
+const Vec3 _x_self_over_len(Vec3 self,f32 x,f32 len_sq) {
+  f32 len=f32_sqrt(len_sq);
+  Vec3 self_over_len=vec3_div_f32(self,len);
+  return vec3_mul_f32(self_over_len,x);
+}
+
+  /// Returns a vector with a length no less than `min` and no more than `max`.
+  ///
+  /// # Panics
+  ///
+  /// Will panic if `min` is greater than `max`, or if either `min` or `max` is negative, when `cmeth_assert` is enabled.
+  inline
+  const Vec3 vec3_clamp_length(Vec3 self,f32 min,f32 max) {
+    cmeth_assert(0.0 <= min);
+    cmeth_assert(min <= max);
+    f32 length_sq=vec3_len_squared(self);
+
+    if(length_sq < min * min) {
+      return _x_self_over_len(self,min,length_sq);
+    } else if(length_sq > max * max) {
+      return _x_self_over_len(self,max,length_sq);
+    } else {
+      return self;
+    }
+  }
+
+  /// Returns a vector with a length no more than `max`.
+  ///
+  /// # Panics
+  ///
+  /// Will panic if `max` is negative when `cmeth_assert` is enabled.
+  inline
+  const Vec3 vec3_clamp_length_max(Vec3 self,f32 max) {
+    cmeth_assert(0.0 <= max);
+    f32 length_sq=vec3_len_squared(self);
+    return (length_sq > max * max)? _x_self_over_len(self,max,length_sq) : self;
+  }
+
+  /// Returns a vector with a length no less than `min`.
+  ///
+  /// # Panics
+  ///
+  /// Will panic if `min` is negative when `cmeth_assert` is enabled.
+  inline
+  const Vec3 vec3_clamp_length_min(Vec3 self, f32 min) {
+    cmeth_assert(0.0 <= min);
+    f32 length_sq=vec3_len_squared(self);
+    return (length_sq < min * min)? _x_self_over_len(self,min,length_sq) : self;
+  }
+
+  /// Fused multiply-add. Computes `vec3_add(vec3_mul(self,a),b)` element-wise with only one rounding
+  /// error, yielding a more accurate result than an unfused multiply-add.
+  ///
+  /// Using `vec3_mul_add` *may* be more performant than an unfused multiply-add if the target
+  /// architecture has a dedicated fma CPU instruction. However, this is not always true,
+  /// and will be heavily dependant on designing algorithms with specific target hardware in
+  /// mind.
+  inline
+  const Vec3 vec3_mul_add(Vec3 self,Vec3 a,Vec3 b) {
+    Vec3 vec={
+      .x=f32_mul_add(self.x, a.x, b.x),
+      .y=f32_mul_add(self.y, a.y, b.y),
+      .z=f32_mul_add(self.z, a.z, b.z)
+    };
+
+    return vec;
+  }
+
+  /// Returns the reflection vector for a given incident vector `self` and surface normal
+  /// `normal`.
+  ///
+  /// `normal` must be normalized.
+  ///
+  /// # Panics
+  ///
+  /// Will panic if `normal` is not normalized when `cmeth_assert` is enabled.
+  inline
+  const Vec3 vec3_reflect(Vec3 self,Vec3 normal) {
+    cmeth_assert(vec3_is_normalized(normal));
+    f32 self_dot_normal=vec3_dot(self,normal);
+    return vec3_sub(self,f32_mul_vec3(2.0f * self_dot_normal,normal));
+  }
+
+  /// Returns the refraction direction for a given incident vector `self`, surface normal
+  /// `normal` and ratio of indices of refraction, `eta`. When total internal reflection occurs,
+  /// a zero vector will be returned.
+  ///
+  /// `self` and `normal` must be normalized.
+  ///
+  /// # Panics
+  ///
+  /// Will panic if `self` or `normal` is not normalized when `cmeth_assert` is enabled.
+  inline
+  const Vec3 vec3_refract(Vec3 self,Vec3 normal,f32 eta) {
+    cmeth_assert(vec3_is_normalized(self));
+    cmeth_assert(vec3_is_normalized(normal));
+    f32 n_dot_i=vec3_dot(normal,self);
+    f32 k=1.0f - eta * eta * (1.0f - n_dot_i * n_dot_i);
+    if(k>=0.0f) {
+      // eta * self - (eta * n_dot_i + f32_sqrt(k)) * normal
+      return vec3_sub(f32_mul_vec3(eta,self),f32_mul_vec3((eta*n_dot_i+f32_sqrt(k)),normal));
+    } else {
+      return VEC3_ZERO;
+    }
+  }
+
+  /// Returns the angle (in radians) between two vectors in the range `[0, +π]`.
+  ///
+  /// The inputs do not need to be unit vectors however they must be non-zero.
+  inline
+  const f32 vec3_angle_between(Vec3 self,Vec3 rhs) {
+    //math::acos_approx(
+    //  self.dot(rhs)
+    //    .div(math::sqrt(self.length_squared().mul(rhs.length_squared()))),
+    //);
+
+    return 0;
+  }
+
+  /// Returns some vector that is orthogonal to the given one.
+  ///
+  /// The input vector must be finite and non-zero.
+  ///
+  /// The output vector is not necessarily unit length. For that use
+  /// [`Self::any_orthonormal_vector()`] instead.
+  inline
+  const Vec3 vec3_any_orthogonal_vector(Vec3* self) {
+    // This can probably be optimized
+    if math::abs(self.x) > math::abs(self.y) {
+      Self::new(-self.z, 0.0, self.x) // self.cross(Self::Y)
+    } else {
+      Self::new(0.0, self.z, -self.y) // self.cross(Self::X)
+    }
+  }
+
+  /// Returns any unit vector that is orthogonal to the given one.
+  ///
+  /// The input vector must be unit length.
+  ///
+  /// # Panics
+  ///
+  /// Will panic if `self` is not normalized when `cmeth_assert` is enabled.
+  inline
+  const Vec3 vec3_any_orthonormal_vector(Vec3* self) {
+    cmeth_assert(self.is_normalized());
+    // From https://graphics.pixar.com/library/OrthonormalB/paper.pdf
+    let sign=math::signum(self.z);
+    let a=-1.0 / (sign + self.z);
+    let b=self.x * self.y * a;
+    Self::new(b, sign + self.y * self.y * a, -self.y)
+  }
+
+  /// Given a unit vector return two other vectors that together form an orthonormal
+  /// basis. That is, all three vectors are orthogonal to each other and are normalized.
+  ///
+  /// # Panics
+  ///
+  /// Will panic if `self` is not normalized when `cmeth_assert` is enabled.
+  inline
+  const Vec3 vec3_any_orthonormal_pair(Vec3* self) -> (Vec3 self, Self) {
+    cmeth_assert(self.is_normalized());
+    // From https://graphics.pixar.com/library/OrthonormalB/paper.pdf
+    let sign=math::signum(self.z);
+    let a=-1.0 / (sign + self.z);
+    let b=self.x * self.y * a;
+    (
+      Self::new(1.0 + sign * self.x * self.x * a, sign * b, -sign * self.x),
+      Self::new(b, sign + self.y * self.y * a, -self.y),
+    )
+  }
+
+
+
+
+
+
+
+
+
 
 inline_always
 const Vec3 vec3_default() {
@@ -757,9 +1104,9 @@ const Vec3 vec3_neg(Vec3 self) {
 inline
 const f32* vec3_index(Vec3* self,usize index) {
   switch(index) {
-    case 0: return &self->x;
-    case 1: return &self->y;
-    case 2: return &self->z;
+    case 0: return Vec3* self->x;
+    case 1: return Vec3* self->y;
+    case 2: return Vec3* self->z;
     default: panic("index out of bounds");
   }
 }
