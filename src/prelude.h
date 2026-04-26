@@ -9,7 +9,7 @@
 #define inline_always __inline __attribute__ ((__always_inline__))
 #define MIN(X,Y) ((X)<(Y))?(X):(Y)
 #define MAX(X,Y) ((X)>(Y))?(X):(Y)
-#define panic(...) { fprintf(stderr,__VA_ARGS__);exit(1); }
+#define panic(...) {( fprintf(stderr,__VA_ARGS__);exit(1); )}
 #define cmeth_assert(...) assert(__VA_ARGS__)
 
 

@@ -404,6 +404,7 @@ const Vec3 vec3_rem_euclid(Vec3 self,Vec3 rhs) {
 inline
 const Vec3 vec3_normalize(Vec3 self) {
   Vec3 normalized=vec3_mul_f32(self,vec3_len_recip(self));
+
   assert(vec3_is_finite(normalized));
   return normalized;
 }
@@ -418,6 +419,7 @@ const Vec3 vec3_normalize(Vec3 self) {
 inline
 const Vec3 vec3_normalize_or(Vec3 self,Vec3 fallback) {
   f32 rcp=vec3_len_recip(self);
+
   return f32_is_finite(rcp) && rcp>0.0?vec3_mul_f32(self,rcp):fallback;
 }
 
@@ -451,7 +453,9 @@ inline
 const Vec3 vec3_project_into(Vec3 self,Vec3 rhs) {
   f32 other_len_sq_rcp=1/vec3_dot(rhs,rhs);
   cmeth_assert(f32_is_finite(other_len_sq_rcp));
+
   f32 x=vec3_dot(self,rhs)*other_len_sq_rcp;
+
   return vec3_mul_f32(self,x);
 }
 
@@ -483,6 +487,7 @@ inline
 const Vec3 vec3_project_onto_normalized(Vec3 self,Vec3 rhs) {
   cmeth_assert(vec3_is_normalized(rhs));
   f32 x=vec3_dot(self,rhs);
+
   return vec3_mul_f32(self,x);
 }
 
@@ -500,6 +505,7 @@ const Vec3 vec3_project_onto_normalized(Vec3 self,Vec3 rhs) {
 inline
 const Vec3 vec3_reject_from_normalized(Vec3 self,Vec3 rhs) {
   Vec3 projection=vec3_project_onto_normalized(self,rhs);
+
   return vec3_sub(self,projection);
 }
 
@@ -628,46 +634,45 @@ const Vec3 vec3_lerp(Vec3 self,Vec3 rhs,f32 s) {
   return vec3_add(s_1_self,srhs);
 }
 
-  /// Moves towards `rhs` based on the value `d`.
-  ///
-  /// When `d` is `0.0`, the result will be equal to `self`. When `d` is equal to
-  /// `vec3_distance(self,rhs)`, the result will be equal to `rhs`. Will not go past `rhs`.
-  inline
-  const Vec3 vec3_move_towards(Vec3* self,Vec3 rhs,f32 d) {
-    Vec3 a=vec3_sub(rhs,*self);
-    f32 len=vec3_len(a);
-    if(len<=d || len<=1e-4) {
-      return rhs;
-    }
-
-    return vec3_div_f32(vec3_add(*self,a),len+d);
+/// Moves towards `rhs` based on the value `d`.
+///
+/// When `d` is `0.0`, the result will be equal to `self`. When `d` is equal to
+/// `vec3_distance(self,rhs)`, the result will be equal to `rhs`. Will not go past `rhs`.
+inline
+const Vec3 vec3_move_towards(Vec3* self,Vec3 rhs,f32 d) {
+  Vec3 a=vec3_sub(rhs,*self);
+  f32 len=vec3_len(a);
+  if(len<=d || len<=1e-4) {
+    return rhs;
   }
+  return vec3_div_f32(vec3_add(*self,a),len+d);
+}
 
-  /// Calculates the midpoint between `self` and `rhs`.
-  ///
-  /// The midpoint is the average of, or halfway point between, two vectors.
-  /// `vec3_midpoint(a,b)` should yield the same result as `vec3_lerp(a, b, 0.5)`
-  /// while being slightly cheaper to compute.
-  inline
-  const Vec3 vec3_midpoint(Vec3 self,Vec3 rhs) {
-    return vec3_mul_f32(vec3_add(self,rhs),0.5);
-  }
+/// Calculates the midpoint between `self` and `rhs`.
+///
+/// The midpoint is the average of, or halfway point between, two vectors.
+/// `vec3_midpoint(a,b)` should yield the same result as `vec3_lerp(a, b, 0.5)`
+/// while being slightly cheaper to compute.
+inline
+const Vec3 vec3_midpoint(Vec3 self,Vec3 rhs) {
+  return vec3_mul_f32(vec3_add(self,rhs),0.5);
+}
 
-  /// Returns true if the absolute difference of all elements between `self` and `rhs` is
-  /// less than or equal to `max_abs_diff`.
-  ///
-  /// This can be used to compare if two vectors contain similar elements. It works best when
-  /// comparing with a known value. The `max_abs_diff` that should be used used depends on
-  /// the values being compared against.
-  ///
-  /// For more see
-  /// [comparing floating point numbers](https://randomascii.wordpress.com/2012/02/25/comparing-floating-point-numbers-2012-edition/).
-  inline
-  const bool vec3_abs_diff_eq(Vec3 self,Vec3 rhs,f32 max_abs_diff) {
-    Vec3 abs_diff=vec3_abs(vec3_sub(self,rhs));
-    BVec3 mask=vec3_cmple(abs_diff,vec3_splat(max_abs_diff));
-    return bvec3_all(mask);
-  }
+/// Returns true if the absolute difference of all elements between `self` and `rhs` is
+/// less than or equal to `max_abs_diff`.
+///
+/// This can be used to compare if two vectors contain similar elements. It works best when
+/// comparing with a known value. The `max_abs_diff` that should be used used depends on
+/// the values being compared against.
+///
+/// For more see
+/// [comparing floating point numbers](https://randomascii.wordpress.com/2012/02/25/comparing-floating-point-numbers-2012-edition/).
+inline
+const bool vec3_abs_diff_eq(Vec3 self,Vec3 rhs,f32 max_abs_diff) {
+  Vec3 abs_diff=vec3_abs(vec3_sub(self,rhs));
+  BVec3 mask=vec3_cmple(abs_diff,vec3_splat(max_abs_diff));
+  return bvec3_all(mask);
+}
 
 inline_always
 const Vec3 _x_self_over_len(Vec3 self,f32 x,f32 len_sq) {
@@ -676,469 +681,63 @@ const Vec3 _x_self_over_len(Vec3 self,f32 x,f32 len_sq) {
   return vec3_mul_f32(self_over_len,x);
 }
 
-  /// Returns a vector with a length no less than `min` and no more than `max`.
-  ///
-  /// # Panics
-  ///
-  /// Will panic if `min` is greater than `max`, or if either `min` or `max` is negative, when `cmeth_assert` is enabled.
-  inline
-  const Vec3 vec3_clamp_length(Vec3 self,f32 min,f32 max) {
-    cmeth_assert(0.0 <= min);
-    cmeth_assert(min <= max);
-    f32 length_sq=vec3_len_squared(self);
-
-    if(length_sq < min * min) {
-      return _x_self_over_len(self,min,length_sq);
-    } else if(length_sq > max * max) {
-      return _x_self_over_len(self,max,length_sq);
-    } else {
-      return self;
-    }
-  }
-
-  /// Returns a vector with a length no more than `max`.
-  ///
-  /// # Panics
-  ///
-  /// Will panic if `max` is negative when `cmeth_assert` is enabled.
-  inline
-  const Vec3 vec3_clamp_length_max(Vec3 self,f32 max) {
-    cmeth_assert(0.0 <= max);
-    f32 length_sq=vec3_len_squared(self);
-    return (length_sq > max * max)? _x_self_over_len(self,max,length_sq) : self;
-  }
-
-  /// Returns a vector with a length no less than `min`.
-  ///
-  /// # Panics
-  ///
-  /// Will panic if `min` is negative when `cmeth_assert` is enabled.
-  inline
-  const Vec3 vec3_clamp_length_min(Vec3 self, f32 min) {
-    cmeth_assert(0.0 <= min);
-    f32 length_sq=vec3_len_squared(self);
-    return (length_sq < min * min)? _x_self_over_len(self,min,length_sq) : self;
-  }
-
-  /// Fused multiply-add. Computes `vec3_add(vec3_mul(self,a),b)` element-wise with only one rounding
-  /// error, yielding a more accurate result than an unfused multiply-add.
-  ///
-  /// Using `vec3_mul_add` *may* be more performant than an unfused multiply-add if the target
-  /// architecture has a dedicated fma CPU instruction. However, this is not always true,
-  /// and will be heavily dependant on designing algorithms with specific target hardware in
-  /// mind.
-  inline
-  const Vec3 vec3_mul_add(Vec3 self,Vec3 a,Vec3 b) {
-    Vec3 vec={
-      .x=f32_mul_add(self.x, a.x, b.x),
-      .y=f32_mul_add(self.y, a.y, b.y),
-      .z=f32_mul_add(self.z, a.z, b.z)
-    };
-
-    return vec;
-  }
-
-  /// Returns the reflection vector for a given incident vector `self` and surface normal
-  /// `normal`.
-  ///
-  /// `normal` must be normalized.
-  ///
-  /// # Panics
-  ///
-  /// Will panic if `normal` is not normalized when `cmeth_assert` is enabled.
-  inline
-  const Vec3 vec3_reflect(Vec3 self,Vec3 normal) {
-    cmeth_assert(vec3_is_normalized(normal));
-    f32 self_dot_normal=vec3_dot(self,normal);
-    return vec3_sub(self,f32_mul_vec3(2.0f * self_dot_normal,normal));
-  }
-
-  /// Returns the refraction direction for a given incident vector `self`, surface normal
-  /// `normal` and ratio of indices of refraction, `eta`. When total internal reflection occurs,
-  /// a zero vector will be returned.
-  ///
-  /// `self` and `normal` must be normalized.
-  ///
-  /// # Panics
-  ///
-  /// Will panic if `self` or `normal` is not normalized when `cmeth_assert` is enabled.
-  inline
-  const Vec3 vec3_refract(Vec3 self,Vec3 normal,f32 eta) {
-    cmeth_assert(vec3_is_normalized(self));
-    cmeth_assert(vec3_is_normalized(normal));
-    f32 n_dot_i=vec3_dot(normal,self);
-    f32 k=1.0f - eta * eta * (1.0f - n_dot_i * n_dot_i);
-    if(k>=0.0f) {
-      // eta * self - (eta * n_dot_i + f32_sqrt(k)) * normal
-      return vec3_sub(f32_mul_vec3(eta,self),f32_mul_vec3((eta*n_dot_i+f32_sqrt(k)),normal));
-    } else {
-      return VEC3_ZERO;
-    }
-  }
-
-  /// Returns the angle (in radians) between two vectors in the range `[0, +π]`.
-  ///
-  /// The inputs do not need to be unit vectors however they must be non-zero.
-  inline
-  const f32 vec3_angle_between(Vec3 self,Vec3 rhs) {
-    //math::acos_approx(
-    //  self.dot(rhs)
-    //    .div(math::sqrt(self.length_squared().mul(rhs.length_squared()))),
-    //);
-
-    return 0;
-  }
-
-  /// Returns some vector that is orthogonal to the given one.
-  ///
-  /// The input vector must be finite and non-zero.
-  ///
-  /// The output vector is not necessarily unit length. For that use
-  /// [`Self::any_orthonormal_vector()`] instead.
-  inline
-  const Vec3 vec3_any_orthogonal_vector(Vec3* self) {
-    // This can probably be optimized
-    if math::abs(self.x) > math::abs(self.y) {
-      Self::new(-self.z, 0.0, self.x) // self.cross(Self::Y)
-    } else {
-      Self::new(0.0, self.z, -self.y) // self.cross(Self::X)
-    }
-  }
-
-  /// Returns any unit vector that is orthogonal to the given one.
-  ///
-  /// The input vector must be unit length.
-  ///
-  /// # Panics
-  ///
-  /// Will panic if `self` is not normalized when `cmeth_assert` is enabled.
-  inline
-  const Vec3 vec3_any_orthonormal_vector(Vec3* self) {
-    cmeth_assert(self.is_normalized());
-    // From https://graphics.pixar.com/library/OrthonormalB/paper.pdf
-    let sign=math::signum(self.z);
-    let a=-1.0 / (sign + self.z);
-    let b=self.x * self.y * a;
-    Self::new(b, sign + self.y * self.y * a, -self.y)
-  }
-
-  /// Given a unit vector return two other vectors that together form an orthonormal
-  /// basis. That is, all three vectors are orthogonal to each other and are normalized.
-  ///
-  /// # Panics
-  ///
-  /// Will panic if `self` is not normalized when `cmeth_assert` is enabled.
-  inline
-  const Vec3 vec3_any_orthonormal_pair(Vec3* self) -> (Vec3 self, Self) {
-    cmeth_assert(self.is_normalized());
-    // From https://graphics.pixar.com/library/OrthonormalB/paper.pdf
-    let sign=math::signum(self.z);
-    let a=-1.0 / (sign + self.z);
-    let b=self.x * self.y * a;
-    (
-      Self::new(1.0 + sign * self.x * self.x * a, sign * b, -sign * self.x),
-      Self::new(b, sign + self.y * self.y * a, -self.y),
-    )
-  }
-
-
-
-
-
-
-
-
-
-
-inline_always
-const Vec3 vec3_default() {
-  return VEC3_ZERO;
-}
-
+/// Returns a vector with a length no less than `min` and no more than `max`.
+///
+/// # Panics
+///
+/// Will panic if `min` is greater than `max`, or if either `min` or `max` is negative, when `cmeth_assert` is enabled.
 inline
-const Vec3 vec3_div(Vec3 self,Vec3 rhs) {
-  Vec3 vec={
-    .x=self.x/rhs.x,
-    .y=self.y/rhs.y,
-    .z=self.z/rhs.z
-  };
-
-  return vec;
-}
-
-inline
-void vec3_dev_assign(Vec3* self,Vec3 rhs) {
-  self->x/=rhs.x;
-  self->y/=rhs.y;
-  self->z/=rhs.z;
-}
-
-inline
-const Vec3 vec3_div_f32(Vec3 self,f32 rhs) {
-  Vec3 vec={
-    .x=self.x/rhs,
-    .y=self.y/rhs,
-    .z=self.z/rhs
-  };
-
-  return vec;
-}
-
-inline
-void vec3_div_assign_f32(Vec3* self,f32 rhs) {
-  self->x/=rhs,
-  self->y/=rhs,
-  self->z/=rhs;
-}
-
-inline
-const Vec3 f32_div_vec3(f32 self,Vec3 rhs) {
-  Vec3 vec={
-    .x=self/rhs.x,
-    .y=self/rhs.y,
-    .z=self/rhs.z
-  };
-
-  return vec;
-}
-
-inline
-const Vec3 vec3_mul(Vec3 self,Vec3 rhs) {
-  Vec3 vec={
-    .x=self.x*rhs.x,
-    .y=self.y*rhs.y,
-    .z=self.z*rhs.z
-  };
-
-  return vec;
-}
-
-inline
-void vec3_mul_assign(Vec3* self,Vec3 rhs) {
-  self->x*=rhs.x;
-  self->y*=rhs.y;
-  self->z*=rhs.z;
-}
-
-inline
-const Vec3 vec3_mul_f32(Vec3 self,f32 rhs) {
-  Vec3 vec={
-    .x=self.x*rhs,
-    .y=self.y*rhs,
-    .z=self.z*rhs
-  };
-
-  return vec;
-}
-
-inline
-void vec3_mul_assign_f32(Vec3* self,f32 rhs) {
-  self->x*=rhs;
-  self->y*=rhs;
-  self->z*=rhs;
-}
-
-inline
-const Vec3 f32_mul_vec3(f32 self,Vec3 rhs) {
-  Vec3 vec={
-    .x=self*rhs.x,
-    .y=self*rhs.y,
-    .z=self*rhs.z
-  };
-
-  return vec;
-}
-
-inline
-const Vec3 vec3_add(Vec3 self,Vec3 rhs) {
-  Vec3 vec={
-    .x=self.x+rhs.x,
-    .y=self.y+rhs.y,
-    .z=self.z+rhs.z
-  };
-
-  return vec;
-}
-
-inline
-void vec3_add_assign(Vec3* self,Vec3 rhs) {
-  self->x+=rhs.x;
-  self->y+=rhs.y;
-  self->z+=rhs.z;
-}
-
-inline
-const Vec3 vec3_add_f32(Vec3 self,f32 rhs) {
-  Vec3 vec={
-    .x=self.x+rhs,
-    .y=self.y+rhs,
-    .z=self.z+rhs
-  };
-
-  return vec;
-}
-
-inline
-void vec3_add_assign_f32(Vec3* self,f32 rhs) {
-  self->x+=rhs;
-  self->y+=rhs;
-  self->z+=rhs;
-}
-
-inline
-const Vec3 f32_add_vec3(f32 self,Vec3 rhs) {
-  Vec3 vec={
-    .x=self+rhs.x,
-    .y=self+rhs.y,
-    .z=self+rhs.z
-  };
-
-  return vec;
-}
-
-inline
-const Vec3 vec3_sub(Vec3 self,Vec3 rhs) {
-  Vec3 vec={
-    .x=self.x-rhs.x,
-    .y=self.y-rhs.y,
-    .z=self.z-rhs.z
-  };
-
-  return vec;
-}
-
-inline
-void vec3_sub_assign(Vec3* self,Vec3 rhs) {
-  self->x-=rhs.x;
-  self->y-=rhs.y;
-  self->z-=rhs.z;
-}
-
-inline
-const Vec3 vec3_sub_f32(Vec3 self,f32 rhs) {
-  Vec3 vec={
-    .x=self.x-rhs,
-    .y=self.y-rhs,
-    .z=self.z-rhs
-  };
-
-  return vec;
-}
-
-inline
-void vec3_sub_assign_f32(Vec3* self,f32 rhs) {
-  self->x-=rhs;
-  self->y-=rhs;
-  self->z-=rhs;
-}
-
-inline
-const Vec3 f32_sub_vec3(f32 self,Vec3 rhs) {
-  Vec3 vec={
-    .x=self-rhs.x,
-    .y=self-rhs.y,
-    .z=self-rhs.z
-  };
-
-  return vec;
-}
-
-inline
-const Vec3 vec3_rem(Vec3 self,Vec3 rhs) {
-  Vec3 vec={
-    .x=f32_rem(self.x,rhs.x),
-    .y=f32_rem(self.y,rhs.y),
-    .z=f32_rem(self.z,rhs.z)
-  };
-
-  return vec;
-}
-
-inline
-void vec3_rem_assign(Vec3* self,Vec3 rhs) {
-  self->x=f32_rem(self->x,rhs.x);
-  self->y=f32_rem(self->x,rhs.y);
-  self->z=f32_rem(self->x,rhs.z);
-}
-
-inline
-const Vec3 vec3_rem_f32(Vec3 self,f32 rhs) {
-  Vec3 vec={
-    .x=f32_rem(self.x,rhs),
-    .y=f32_rem(self.y,rhs),
-    .z=f32_rem(self.z,rhs)
-  };
-
-  return vec;
-}
-
-inline
-void vec3_rem_assign_f32(Vec3* self,f32 rhs) {
-  self->x=f32_rem(self->x,rhs);
-  self->y=f32_rem(self->y,rhs);
-  self->z=f32_rem(self->z,rhs);
-}
-
-inline
-const Vec3 f32_rem_vec3(f32 self,Vec3 rhs) {
-  Vec3 vec={
-    .x=f32_rem(self,rhs.x),
-    .y=f32_rem(self,rhs.y),
-    .z=f32_rem(self,rhs.z)
-  };
-
-  return vec;
-}
-
-inline
-const Vec3 vec3_neg(Vec3 self) {
-  Vec3 vec={
-    .x=f32_neg(self.x),
-    .y=f32_neg(self.y),
-    .z=f32_neg(self.z)
-  };
-
-  return vec;
-}
-
-inline
-const f32* vec3_index(Vec3* self,usize index) {
-  switch(index) {
-    case 0: return Vec3* self->x;
-    case 1: return Vec3* self->y;
-    case 2: return Vec3* self->z;
-    default: panic("index out of bounds");
+const Vec3 vec3_clamp_length(Vec3 self,f32 min,f32 max) {
+  cmeth_assert(0.0 <= min);
+  cmeth_assert(min <= max);
+  f32 length_sq=vec3_len_squared(self);
+  if(length_sq < min * min) {
+    return _x_self_over_len(self,min,length_sq);
+  } else if(length_sq > max * max) {
+    return _x_self_over_len(self,max,length_sq);
+  } else {
+    return self;
   }
 }
 
+/// Returns a vector with a length no more than `max`.
+///
+/// # Panics
+///
+/// Will panic if `max` is negative when `cmeth_assert` is enabled.
+inline
+const Vec3 vec3_clamp_length_max(Vec3 self,f32 max) {
+  cmeth_assert(0.0 <= max);
+  f32 length_sq=vec3_len_squared(self);
+  return (length_sq > max * max)? _x_self_over_len(self,max,length_sq) : self;
+}
 
+/// Returns a vector with a length no less than `min`.
+///
+/// # Panics
+///
+/// Will panic if `min` is negative when `cmeth_assert` is enabled.
+inline
+const Vec3 vec3_clamp_length_min(Vec3 self, f32 min) {
+  cmeth_assert(0.0 <= min);
+  f32 length_sq=vec3_len_squared(self);
+  return (length_sq < min * min)? _x_self_over_len(self,min,length_sq) : self;
+}
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+/// Fused multiply-add. Computes `vec3_add(vec3_mul(self,a),b)` element-wise with only one rounding
+/// error, yielding a more accurate result than an unfused multiply-add.
+///
+/// Using `vec3_mul_add` *may* be more performant than an unfused multiply-add if the target
+/// architecture has a dedicated fma CPU instruction. However, this is not always true,
+/// and will be heavily dependant on designing algorithms with specific target hardware in
+/// mind.
+inline
+const Vec3 vec3_mul_add(Vec3 self,Vec3 a,Vec3 b) {
+  Vec3 vec={
+    .x=f32_mul_add(self.x, a.x, b.x),
+    .y=f32_mul_add(self.y, a.y, b.y),
+    .z=f32_mul_add(self.z, a.z, b.z)
+  };
+  return vec;
+}
 
